@@ -54,8 +54,8 @@ public abstract class FileUtil {
     try (BufferedReader bufferLectura = new BufferedReader(new FileReader(this.archivo))) {
 
       System.out.println("Empezamos el ciclo");
-      System.out.println("El header es:");
-      System.out.println(bufferLectura.readLine());
+      // System.out.println("El header es:");
+      // System.out.println(bufferLectura.readLine()); // Se salta la primer línea para evitar el header
       // Leemos, procesamos y escribimos la información relevante
       while ((linea = bufferLectura.readLine()) != null) {
         campos = linea.split(","); // Separamos por coma por ser formato CSV
