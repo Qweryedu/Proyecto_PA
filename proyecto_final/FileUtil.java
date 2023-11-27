@@ -20,30 +20,30 @@ public abstract class FileUtil {
     this.archivoSalida = new File(pathOut, salida);
 
     // Aseguramos que el archivo existe
-    BuscaDirectorio();
+    // BuscaDirectorio();
   }
 
   public FileUtil(String entrada, String pathIn) {
 
     this.archivo = new File(pathIn, entrada);
-    BuscaDirectorio();
+    // BuscaDirectorio();
   }
 
   // Métodos
-  public void BuscaDirectorio() {
-    // Este método verifica que los directorios y el archivo de entrada existan
-    try {
-      // String path = this.archivo.getAbsolutePath();
-      // System.out.println(path);
-      // if (!this.archivo.exists()) {
-      // System.out.println("El archivo de entrada no existe");
-      // System.out.println(this.archivo.exists());
-      // throw new Exception();
-      // }
-    } catch (Exception e) {
-      e.getStackTrace();
-    }
-  }
+  // public void BuscaDirectorio() {
+  // // Este método verifica que los directorios y el archivo de entrada existan
+  // try {
+  // // String path = this.archivo.getAbsolutePath();
+  // // System.out.println(path);
+  // // if (!this.archivo.exists()) {
+  // // System.out.println("El archivo de entrada no existe");
+  // // System.out.println(this.archivo.exists());
+  // // throw new Exception();
+  // // }
+  // } catch (Exception e) {
+  // e.getStackTrace();
+  // }
+  // }
 
   public void LeeArchivo() {
     System.out.println("Empezamos a leer el archivo");
@@ -52,10 +52,6 @@ public abstract class FileUtil {
 
     // Leemos los contenidos del archivo
     try (BufferedReader bufferLectura = new BufferedReader(new FileReader(this.archivo))) {
-
-      System.out.println("Empezamos el ciclo");
-      // System.out.println("El header es:");
-      // System.out.println(bufferLectura.readLine()); // Se salta la primer línea para evitar el header
       // Leemos, procesamos y escribimos la información relevante
       while ((linea = bufferLectura.readLine()) != null) {
         campos = linea.split(","); // Separamos por coma por ser formato CSV
@@ -63,7 +59,6 @@ public abstract class FileUtil {
         HazAlgo(campos);
 
       }
-      System.out.println("Termina de hacer cosas");
     } catch (FileNotFoundException e) {
       e.getStackTrace();
     } catch (IOException e) {

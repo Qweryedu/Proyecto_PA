@@ -1,12 +1,15 @@
 package proyecto_final;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Map;
 
 public class Proyecto {
     // Variables de clase
     public static String entrada = "afluenciastc_simple_08_2023.csv"; // Base de datos
     public static String salida = "TestSalida.csv"; // Archivo de salida
     public static String path = "./"; // Directorio
+    public static Map<String, ArrayList<String>> metro;
 
     public static void main(String[] args) {
         // Tomamos el tiempo
@@ -30,10 +33,14 @@ public class Proyecto {
         prom.LeeArchivo();
         System.out.println("El promedio total es: " + prom.getPromedio());
         System.out.println("Calculando de " + prom.getContador() + " filas");
+
+        ///// Usar un query específico
+
         // Tiempo final
         long endTime = System.nanoTime();
         long totalTime = (endTime - startTime) / 1000000;
         System.out.println("Tiempo transcurrido:" + totalTime + "ms");
+
     }
 
 }
