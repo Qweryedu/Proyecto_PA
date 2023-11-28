@@ -9,7 +9,8 @@ public abstract class FileUtil {
   // Varibles
   // public String entrada, pathIn;
   // public String salida, pathOut;
-  public File archivo, archivoSalida;
+  public File archivo;
+  // public File archivoSalida;
 
   // Constructor
   public FileUtil(String entrada, String pathIn, String salida, String pathOut) {
@@ -17,7 +18,7 @@ public abstract class FileUtil {
     // de salida y el path de salida
 
     this.archivo = new File(pathIn, entrada);
-    this.archivoSalida = new File(pathOut, salida);
+    // this.archivoSalida = new File(pathOut, salida);
 
     // Aseguramos que el archivo existe
     // BuscaDirectorio();

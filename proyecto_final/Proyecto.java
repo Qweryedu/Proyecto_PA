@@ -1,8 +1,10 @@
 package proyecto_final;
 
 import java.io.*;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Scanner;
 
 public class Proyecto {
     // Variables de clase
@@ -25,7 +27,8 @@ public class Proyecto {
         } catch (IOException e) {
             e.getStackTrace();
         }
-
+        metro = LimpiaBase.getMetro();
+        // System.out.println(metro);
         // Calculamos el promedio de todo
         // Solo para revisar que todo funciona
         System.out.println("Sacamos promedio");
@@ -35,6 +38,18 @@ public class Proyecto {
         System.out.println("Calculando de " + prom.getContador() + " filas");
 
         ///// Usar un query específico
+        try {
+            Scanner sc = new Scanner(System.in);
+            Query preguntas = new Query(entrada, path, sc);
+            // preguntas.setTipoDeFecha();
+            preguntas.setLineaEstacion(metro);
+        } catch (ParseException e) {
+            System.out.println("Error en preguntas.setTipoDeFecha");
+            e.getStackTrace();
+        }
+        
+        
+
 
         // Tiempo final
         long endTime = System.nanoTime();

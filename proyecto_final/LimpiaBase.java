@@ -35,9 +35,9 @@ public class LimpiaBase extends FileUtil {
 
       // Descomponemos el campo 0 de la fecha
       String fecha = campos[0];
-      // Le damos un nuevo formato a la fecha de YYYYMMDD
-      String nuevaFecha = fecha.substring(0, 4) + fecha.substring(5, 7)
-          + fecha.substring(8, fecha.length());
+      // // Le damos un nuevo formato a la fecha de YYYYMMDD
+      // String nuevaFecha = fecha.substring(0, 4) + fecha.substring(5, 7)
+      //     + fecha.substring(8, fecha.length());
 
       // Descomponemos el campo 3 en la linea
       String linea = campos[3];
@@ -62,9 +62,10 @@ public class LimpiaBase extends FileUtil {
         metro.get(linea).add(estacion);
       }
 
+      // System.out.println(metro);
       ////////// Escribimos el archivo ////////////////////////////
       // Escribimos en el nuevo archivo
-      this.bufferEscritura.write(nuevaFecha + "," + linea + "," + estacion + "," + afluencia + "\n");
+      this.bufferEscritura.write(fecha + "," + linea + "," + estacion + "," + afluencia + "\n");
     } catch (FileNotFoundException e) {
       e.getStackTrace();
     } catch (IOException e) {
