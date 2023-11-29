@@ -21,9 +21,8 @@ public class Promedio extends FileUtil {
     // Magia sucede dentro
     // Método que calcula el promedio
     try {
-      this.promedio += Double.parseDouble(campos[3]);
-      // Usamos el index 3 porque después de ser limpiada la DB, la afluencia
-      // queda en ese index
+      this.promedio += Double.parseDouble(campos[campos.length - 1]);
+      // Usamos el último index  porque la afluencia queda en ese index
       this.contador += 1;
     } catch (Exception e) {
       System.out.println("Un valor está chueco en el iterador " + this.contador);

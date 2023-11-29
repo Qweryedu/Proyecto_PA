@@ -30,6 +30,10 @@ public abstract class FileUtil {
     // BuscaDirectorio();
   }
 
+  public FileUtil() {
+    
+  }
+
   // Métodos
   // public void BuscaDirectorio() {
   // // Este método verifica que los directorios y el archivo de entrada existan

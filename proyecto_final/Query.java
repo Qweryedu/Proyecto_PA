@@ -4,8 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -34,17 +32,27 @@ public class Query extends FileUtil {
   //Scanner
   private Scanner sc;
 
-  // Buffer para escribir el archivo de salida
+  // Path donde se van a mandar los archivos a revisar
+  private static String pathOut = "./";
+
+  // Declaramos el FileBufferWriter
+  private BufferedWriter archivoSalida;
 
   // Constructor
   public Query(String entrada, String pathIn, Scanner sc) throws ParseException {
     super(entrada, pathIn);
     this.sc = sc;
+  }
+
+  public Query(Scanner sc) throws ParseException {
+    this.sc = sc;
+    // Definimos el formato de fecha y las fechas de inicio y fin
     sdf = new SimpleDateFormat("yyyy-MM-dd");
     fechaInicio = sdf.parse("2010-01-01");
     fechaFinal  = sdf.parse("2023-12-31");
   }
 
+  // Métodos
   public void setTipoDeFecha() {
     // Método que pregunta por los parámetros de búsqueda de las fechas
     System.out.println("Qué tipo de búsqueda desea realizar? Ingrese el dígito de la opción que desea: ");
@@ -124,6 +132,7 @@ public class Query extends FileUtil {
     System.out.println("Ingrese el número (o letra) de la(s) línea(s) que desea revisar (separados por coma)");
     System.out.println("En caso de querer revisar todas, solo dar enter");
     
+    // boolean tieneLineas = false;
     while (true) {
       try {
         String str = this.sc.nextLine(); 
@@ -145,23 +154,29 @@ public class Query extends FileUtil {
               System.out.println("La línea " + l + " no existe");
             }
           }
+          // tieneLineas = true;
           break;
         // Se usan todas las líneas
         } else {
+          System.out.println("Se usan todas las líneas");
+          System.out.println( metro.keySet().toArray());
           this.lineas = (String[]) metro.keySet().toArray();
           for (String linea : this.lineas) {
             metroMuestra.put("Línea " + linea, new ArrayList<>());
           }
-          System.out.println("Se eligieron todas las líneas");
+          System.out.println(metroMuestra);
+          // System.out.println("Se eligieron todas las líneas");
+          // tieneLineas = true;
           break;
         }
       } catch (InputMismatchException e) {
         sc.nextLine(); // Limpiamos el buffer
         System.out.println("Favor de solo ingresar elementos disponibles");
-      } catch (Exception e) {
-        System.out.println("Error al ingresar las líneas a revisar");
-        e.getStackTrace();
+      // } catch (Exception e) {
+      //   System.out.println("Error al ingresar las líneas a revisar");
+      //   e.getStackTrace();
       }
+      
     }
     System.out.println(metroMuestra);
     /////// Averiguamos las estaciones
@@ -179,25 +194,49 @@ public class Query extends FileUtil {
     }
     // System.out.println("Ingrese el asdf");
 
+  public void setFileNameOut(String filename) {
+    //Definimos el BufferWriter
+    try {
+      this.archivoSalida = new BufferedWriter(new FileWriter(new File(pathOut, filename)));
+    } catch (IOException e) {
+      e.getStackTrace();
+    }
+    
+  }
 
   @Override
-    public void HazAlgo(String[] campos) {
-    // Definimos los campos 
-    String fecha = campos[0];
-    // Cambiamos la fecha a time
+  public void HazAlgo(String[] campos) {
+
     try {
+      // Definimos los campos 
+      String linea = campos[1];
+      String estacion = campos[2];
+      String afluencia = campos[3];
+
+      // System.out.println(estacion.equals("Línea 3"));
+      // Formateamos la fecha
+      String fecha = campos[0];
+      // System.out.println(fecha);
+      // Cambiamos la fecha a Date
+
       Date nuevaFecha = sdf.parse(fecha);
+      // System.out.println(nuevaFecha);
+      // Checamos si el dato entra 
+      // System.out.println(linea);
+      // System.out.println(linea.equals("Línea 3"));
+      if( nuevaFecha.after(fechaInicio) &&  nuevaFecha.before(fechaFinal) && linea.equals("Línea 3")) {
+        // System.out.println("Entra dato");
+        this.archivoSalida.write(fecha+","+linea+","+estacion+","+afluencia+"\n");
+      }
     } catch (ParseException e) {
-      e.printStackTrace();
+      System.out.println("Error del Parse en HazAlgo");
+      // e.printStackTrace();
+    } catch (IOException e) {
+      System.out.println("Error de IO");
+      e.getStackTrace();
+    } catch (ArrayIndexOutOfBoundsException e) {
+      System.out.println("Index fuera del límite en Query-HazAlgo");
     }
-
-    String linea = campos[1];
-    String estacion = campos[2];
-    String afluencia = campos[3];
-
-
     
   }
 }
-
-  

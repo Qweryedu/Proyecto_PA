@@ -12,6 +12,7 @@ import java.util.Map;
 public class LimpiaBase extends FileUtil {
   // Esta clase se usa de manera inicial para limpiar la DB
   // Y para obtener los strings de las diferentes líneas y estaciones
+  public int contador = 0;
 
   // Archivo de salida
   BufferedWriter bufferEscritura;
@@ -62,10 +63,12 @@ public class LimpiaBase extends FileUtil {
         metro.get(linea).add(estacion);
       }
 
-      // System.out.println(metro);
       ////////// Escribimos el archivo ////////////////////////////
       // Escribimos en el nuevo archivo
       this.bufferEscritura.write(fecha + "," + linea + "," + estacion + "," + afluencia + "\n");
+      // Después de escribir el dato, acumulamos 
+      this.contador += 1;
+      
     } catch (FileNotFoundException e) {
       e.getStackTrace();
     } catch (IOException e) {
