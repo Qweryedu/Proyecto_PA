@@ -38,8 +38,6 @@ public class Proyecto {
             Query querySettings = new Query(sc);
             querySettings.setTipoDeFecha();
             // querySettings.setLineaEstacion(metro);
-            // querySettings.setFileNameOut();
-            querySettings.LeeArchivo();
         } catch (ParseException e) {
             System.out.println("Error en preguntas.setTipoDeFecha");
             e.getStackTrace();

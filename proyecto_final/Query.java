@@ -1,9 +1,5 @@
 package proyecto_final;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Map;
@@ -12,35 +8,27 @@ import java.util.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class Query extends FileUtil {
+public class Query {
   // Esta clase pregunta en consola y recibe los parámetros que
-  // el usuario quiere buscar, para así segmentar por archivos más
-  // pequeños
+  // el usuario quiere buscar, para así confirmar si el query es válido
+
+
   // Definimos las fechas
-  // TEST
-  public static SimpleDateFormat sdf;
+  public static SimpleDateFormat sdf; // Formato de las fechas
   private static Date fechaInicio;
   private static Date fechaFinal;
-  // public static DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-  // private static LocalDateTime fechaInicio = LocalDateTime.parse("2010-01-01", f);
-  // private static LocalDateTime fechaFinal  = LocalDateTime.parse("2023-12-31", f);
-  private static String tipoFecha;
-  private String[] lineas;
-  // Metro que se va a usar
-  public Map<String, ArrayList<String>> metroMuestra;
+  private static String tipoFecha; // Entre Histórico o por periodos
+  private String[] lineas; // líneas que se desean consultar 
 
-  //Scanner
+  // Metro que se va a usar
+  public static Map<String, ArrayList<String>> metroMuestra;
+
+  //Scanner para la consulta de los datos
   private Scanner sc;
 
-  // Path donde se van a mandar los archivos a revisar
-  private static String pathOut = "./";
-
-  // Declaramos el FileBufferWriter
-  private BufferedWriter archivoSalida;
 
   // Constructor
   public Query(String entrada, String pathIn, Scanner sc) throws ParseException {
-    super(entrada, pathIn);
     this.sc = sc;
   }
 
@@ -83,8 +71,8 @@ public class Query extends FileUtil {
 
     // Solo si es 'periodo' cambiamos las fechas, de otro modo dejamos las
     // fechas como ya están predefinidas
-    if (tipoFecha == "periodo") {
-      // Preguntamos por las fechas de inicio y de final
+    if (tipoFecha.equals("periodo")) {
+      /////////// Preguntamos por las fechas de inicio y de final ////////////////
       System.out.println("Usar el formato AAAA-MM-DD para ingresar la fecha");
       System.out.println("Ingrese la fecha de inicio");
       while (true) {
@@ -118,6 +106,7 @@ public class Query extends FileUtil {
         }
       }
     }
+    //// No tiene else porque en el constructor las fechas se están definiendo entre los intervalos máximos
 
   }
 
@@ -192,26 +181,13 @@ public class Query extends FileUtil {
     //   }
       
     }
-    // System.out.println("Ingrese el asdf");
 
-  public void setFileNameOut(String filename) {
-    //Definimos el BufferWriter
-    try {
-      this.archivoSalida = new BufferedWriter(new FileWriter(new File(pathOut, filename)));
-    } catch (IOException e) {
-      e.getStackTrace();
-    }
-    
-  }
-
-  @Override
-  public void HazAlgo(String[] campos) {
-
+  public static boolean checaQuery(String[] campos) {
     try {
       // Definimos los campos 
       String linea = campos[1];
       String estacion = campos[2];
-      String afluencia = campos[3];
+      // String afluencia = campos[3];
 
       // System.out.println(estacion.equals("Línea 3"));
       // Formateamos la fecha
@@ -224,19 +200,25 @@ public class Query extends FileUtil {
       // Checamos si el dato entra 
       // System.out.println(linea);
       // System.out.println(linea.equals("Línea 3"));
-      if( nuevaFecha.after(fechaInicio) &&  nuevaFecha.before(fechaFinal) && linea.equals("Línea 3")) {
+      if( nuevaFecha.after(fechaInicio) &&  nuevaFecha.before(fechaFinal)) {
+        // Checamos las líneas
+        if (metroMuestra.containsKey(linea)) {
+          // Checamos las estaciones
+          if (metroMuestra.get(linea).contains(estacion) ) {
+            return true;
+          }
+        }
         // System.out.println("Entra dato");
-        this.archivoSalida.write(fecha+","+linea+","+estacion+","+afluencia+"\n");
+
+      } else {
+        return false;
       }
+
     } catch (ParseException e) {
       System.out.println("Error del Parse en HazAlgo");
       // e.printStackTrace();
-    } catch (IOException e) {
-      System.out.println("Error de IO");
-      e.getStackTrace();
-    } catch (ArrayIndexOutOfBoundsException e) {
-      System.out.println("Index fuera del límite en Query-HazAlgo");
     }
-    
+    return false;
   }
+  
 }
