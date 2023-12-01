@@ -5,6 +5,8 @@ import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
 import java.util.Date;
+import java.util.HashMap;
+// import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
@@ -12,32 +14,35 @@ public class Query {
   // Esta clase pregunta en consola y recibe los parámetros que
   // el usuario quiere buscar, para así confirmar si el query es válido
 
-
   // Definimos las fechas
   public static SimpleDateFormat sdf; // Formato de las fechas
   private static Date fechaInicio;
   private static Date fechaFinal;
   private static String tipoFecha; // Entre Histórico o por periodos
-  private String[] lineas; // líneas que se desean consultar 
+  // private String[] lineas; // líneas que se desean consultar
 
   // Metro que se va a usar
   public static Map<String, ArrayList<String>> metroMuestra;
 
-  //Scanner para la consulta de los datos
+  // Scanner para la consulta de los datos
   private Scanner sc;
 
-
   // Constructor
-  public Query(String entrada, String pathIn, Scanner sc) throws ParseException {
-    this.sc = sc;
-  }
+  // public Query(String entrada, String pathIn, Scanner sc) throws ParseException
+  // {
+  // this.sc = sc;
+  // }
 
   public Query(Scanner sc) throws ParseException {
     this.sc = sc;
     // Definimos el formato de fecha y las fechas de inicio y fin
     sdf = new SimpleDateFormat("yyyy-MM-dd");
+    sdf.setLenient(false);
     fechaInicio = sdf.parse("2010-01-01");
-    fechaFinal  = sdf.parse("2023-12-31");
+    fechaFinal = sdf.parse("2023-12-31");
+    System.out.println("\nmetroMuestra: ");
+    metroMuestra = new HashMap<>();
+    System.out.println(metroMuestra);
   }
 
   // Métodos
@@ -106,7 +111,8 @@ public class Query {
         }
       }
     }
-    //// No tiene else porque en el constructor las fechas se están definiendo entre los intervalos máximos
+    //// No tiene else porque en el constructor las fechas se están definiendo entre
+    //// los intervalos máximos
 
   }
 
@@ -114,77 +120,114 @@ public class Query {
     // Para definir las estaciones que se desean verificar
     // Vamos a necesitar el uso de Regex probablemente para parcear el todo
     // Mostramos las líneas disponibles
-    System.out.println("Las líneas del metro son:\n");
+    System.out.println("Las líneas del metro son:");
     for (String linea : metro.keySet()) {
       System.out.println(linea);
     }
-    System.out.println("Ingrese el número (o letra) de la(s) línea(s) que desea revisar (separados por coma)");
-    System.out.println("En caso de querer revisar todas, solo dar enter");
-    
-    // boolean tieneLineas = false;
+    System.out.println("Ingrese uno por uno el número (o letra) de la(s) línea(s) que desea revisar");
+    System.out.println("Ingrese 'exit' para finalizar");
+    System.out.println("En caso de querer revisar todas ingresar '*' ");
+
     while (true) {
       try {
-        String str = this.sc.nextLine(); 
+        // Obtenemos la linea
+        String str = this.sc.nextLine();
         System.out.println("str: " + str);
         // Quitamos todos los espacios del string
         str = str.replaceAll("\\s", "");
 
-        // Verificamos en caso de no ser todas las estaciones
-        if (!str.equals("*")) {
-          // Se usan las líneas indicadas
-          this.lineas = str.split(",");
-          System.out.println("Despues de partir: " + this.lineas);
-          System.out.println("Las líneas elegidas son:");
-          for(String l : this.lineas) {
-            if (metro.containsKey("Línea " + l)) {
-              System.out.println("Línea " + l);
-              metroMuestra.put("Línea " + l, new ArrayList<>());
-            } else {
-              System.out.println("La línea " + l + " no existe");
-            }
-          }
-          // tieneLineas = true;
-          break;
-        // Se usan todas las líneas
-        } else {
+        // Preguntamos si es *
+        if (str.equals("*")) {
           System.out.println("Se usan todas las líneas");
-          System.out.println( metro.keySet().toArray());
-          this.lineas = (String[]) metro.keySet().toArray();
-          for (String linea : this.lineas) {
-            metroMuestra.put("Línea " + linea, new ArrayList<>());
+          // Limpiamos el mapa por si tenía valores ya dentro
+          // metroMuestra.clear();
+          // Iteramos todas las líneas y las metemos a metroMuestra
+          for (String linea : metro.keySet()) {
+            metroMuestra.putIfAbsent(linea, new ArrayList<String>());
           }
-          System.out.println(metroMuestra);
-          // System.out.println("Se eligieron todas las líneas");
-          // tieneLineas = true;
-          break;
+          break; // Paramos el while
+
+        } else if (str.equals("exit")) {
+          System.out.println("Se usarán las siguientes líneas: ");
+          for (String linea : metroMuestra.keySet()) {
+            System.out.println(linea);
+          }
+          break; // Paramos el while
+
+        } else {
+          // Checamos si es una entrada válida y la ingresamos si no está
+          if (metro.containsKey("Línea " + str)) {
+            System.out.println("Intentamos agregar la línea " + str);
+            metroMuestra.putIfAbsent("Línea " + str, new ArrayList<String>());
+          } else {
+            System.out.println(str + "No es una línea");
+          }
         }
       } catch (InputMismatchException e) {
         sc.nextLine(); // Limpiamos el buffer
         System.out.println("Favor de solo ingresar elementos disponibles");
-      // } catch (Exception e) {
-      //   System.out.println("Error al ingresar las líneas a revisar");
-      //   e.getStackTrace();
+      } catch (NullPointerException e) {
+        System.out.println("Error al intentar ingresar la linea");
+        System.out.println(metroMuestra);
+        e.getStackTrace();
+        // } catch (Exception e) {
+        // System.out.println("Error al ingresar las líneas a revisar");
+        // e.getStackTrace();
       }
-      
     }
-    System.out.println(metroMuestra);
-    /////// Averiguamos las estaciones
-    System.out.println("Averiguamos las estaciones");
-    // while (true) {
-    //   for (String linea : metroMuestra.keySet()) {
-    //     for (String estaciones : metro.get(linea)) {
-    //       System.out.println(estaciones);
+    // System.out.println(metroMuestra);
 
-    //       }
-    //     }
-    //     break;
-    //   }
-      
+    /////// Averiguamos las estaciones
+    System.out.println("Ahora las estaciones por línea");
+    System.out.println("Favor de escribirlas como se muestran");
+    System.out.println("En caso de querer todas las estaciones, escribir '*'");
+    // Iteramos por las líneas sí ingresadas
+    for (String linea : metroMuestra.keySet()) {
+      System.out.println("Las estaciones de la línea son:");
+      System.out.println(metro.get(linea));
+      while (true) {
+        try {
+          // Obtenemos la estación
+          String str = this.sc.nextLine();
+          // Si quiere todas las estaciones
+          if (str.equals("*")) {
+            // Recorremos las estaciones de la línea
+            for (String estacion : metro.get(linea)) {
+              // Si no la contiene, la agregamos
+              if (!metroMuestra.get(linea).contains(estacion)) {
+                metroMuestra.get(linea).add(estacion);
+              }
+            }
+            break;
+            // Si quiere salir
+          } else if (str.equals("exit")) {
+            // Cuando quiere salir
+            System.out.println("Las estaciones a checar son:");
+            System.out.println(metroMuestra.get(linea));
+            break;
+            // Si ingresó un valor válido
+          } else {
+            // Verificamos la linea y la ingresamos
+            if (metro.get(linea).contains(str)) {
+              // En caso que no se encuentre ya dentro
+              if (!metroMuestra.get(linea).contains(str)) {
+                metroMuestra.get(linea).add(str);
+              }
+            } else {
+              System.out
+                  .println("La estación ingresada no se encuentra en esta línea o no fue escrita incorrectamente");
+            }
+          }
+        } catch (InputMismatchException e) {
+          System.out.println("Error en el ingreso de la estación");
+        }
+      }
     }
+  }
 
   public static boolean checaQuery(String[] campos) {
     try {
-      // Definimos los campos 
+      // Definimos los campos
       String linea = campos[1];
       String estacion = campos[2];
       // String afluencia = campos[3];
@@ -197,14 +240,14 @@ public class Query {
 
       Date nuevaFecha = sdf.parse(fecha);
       // System.out.println(nuevaFecha);
-      // Checamos si el dato entra 
+      // Checamos si el dato entra
       // System.out.println(linea);
       // System.out.println(linea.equals("Línea 3"));
-      if( nuevaFecha.after(fechaInicio) &&  nuevaFecha.before(fechaFinal)) {
+      if (nuevaFecha.after(fechaInicio) && nuevaFecha.before(fechaFinal)) {
         // Checamos las líneas
         if (metroMuestra.containsKey(linea)) {
           // Checamos las estaciones
-          if (metroMuestra.get(linea).contains(estacion) ) {
+          if (metroMuestra.get(linea).contains(estacion)) {
             return true;
           }
         }
@@ -220,5 +263,5 @@ public class Query {
     }
     return false;
   }
-  
+
 }

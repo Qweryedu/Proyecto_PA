@@ -31,7 +31,7 @@ public abstract class FileUtil {
   }
 
   public FileUtil() {
-    
+
   }
 
   // Métodos
@@ -51,7 +51,7 @@ public abstract class FileUtil {
   // }
 
   public void LeeArchivo() {
-    System.out.println("Empezamos a leer el archivo");
+    // System.out.println("Empezamos a leer el archivo");
     String linea; // Para leer las líneas del archivo
     String[] campos; // Cuando separamos la línea leída
 

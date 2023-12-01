@@ -1,7 +1,8 @@
 package proyecto_final;
 
-import java.io.*;
+// import java.io.*;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,7 +39,7 @@ public class LimpiaBase extends FileUtil {
       String fecha = campos[0];
       // // Le damos un nuevo formato a la fecha de YYYYMMDD
       // String nuevaFecha = fecha.substring(0, 4) + fecha.substring(5, 7)
-      //     + fecha.substring(8, fecha.length());
+      // + fecha.substring(8, fecha.length());
 
       // Descomponemos el campo 3 en la linea
       String linea = campos[3];
@@ -66,9 +67,9 @@ public class LimpiaBase extends FileUtil {
       ////////// Escribimos el archivo ////////////////////////////
       // Escribimos en el nuevo archivo
       this.bufferEscritura.write(fecha + "," + linea + "," + estacion + "," + afluencia + "\n");
-      // Después de escribir el dato, acumulamos 
+      // Después de escribir el dato, acumulamos
       this.contador += 1;
-      
+
     } catch (FileNotFoundException e) {
       e.getStackTrace();
     } catch (IOException e) {

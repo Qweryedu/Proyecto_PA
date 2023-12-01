@@ -16,7 +16,6 @@ public class Proyecto {
     public static Map<String, ArrayList<String>> metro;
 
     public static void main(String[] args) {
-        
 
         // Limpiamos la DB
         try {
@@ -26,23 +25,24 @@ public class Proyecto {
             System.out.println("Creamos el objeto LimpiaDB");
             LimpiaDB.LeeArchivo();
             LimpiaDBG.LeeArchivo();
-            System.out.println("Ya corrimos LeeArchivo");
+            System.out.println("Ya limpiamos");
         } catch (IOException e) {
             e.getStackTrace();
         }
-        // metro = LimpiaBase.getMetro();
+        metro = LimpiaBase.getMetro();
+        System.out.println(metro.containsKey("Línea A"));
 
         /// Usar un query específico
         try {
             Scanner sc = new Scanner(System.in);
             Query querySettings = new Query(sc);
-            querySettings.setTipoDeFecha();
-            // querySettings.setLineaEstacion(metro);
+            // querySettings.setTipoDeFecha();
+            querySettings.setLineaEstacion(metro);
         } catch (ParseException e) {
             System.out.println("Error en preguntas.setTipoDeFecha");
             e.getStackTrace();
         }
-        
+
         // Tomamos el tiempo
         // Tiempo inicial
         long tiempoInicioSec = System.nanoTime();
@@ -60,14 +60,13 @@ public class Proyecto {
         System.out.println("El promedio total es: " + promG.getPromedio());
         System.out.println("Calculando de " + promG.getContador() + " filas");
 
-
-        ////// Despachador 
+        ////// Despachador
         Despachador despachador = new Despachador(salidaGrande, path, 3);
         despachador.LeeArchivo();
         System.out.println("Se terminaron de hacer los subArchivos");
         // Tiempo final
         long tiempoFinalSec = System.nanoTime();
-        long tiempoTotalSec = (tiempoFinalSec  - tiempoInicioSec) / 1000000;
+        long tiempoTotalSec = (tiempoFinalSec - tiempoInicioSec) / 1000000;
         System.out.println("Tiempo transcurrido:" + tiempoTotalSec + "ms");
 
     }
