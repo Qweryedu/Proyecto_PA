@@ -17,7 +17,7 @@ public class Proyecto {
 
     public static void main(String[] args) {
 
-        // Limpiamos la DB
+        //////////////// Limpiamos la DB //////////////////////////////
         try {
             LimpiaBase LimpiaDB = new LimpiaBase(entrada, path, salida, path);
             LimpiaBase LimpiaDBG = new LimpiaBase(entradaGrande, path, salidaGrande, path);
@@ -29,17 +29,20 @@ public class Proyecto {
         } catch (IOException e) {
             e.getStackTrace();
         }
-        metro = LimpiaBase.getMetro();
-        System.out.println(metro.containsKey("Línea A"));
 
-        /// Usar un query específico
+        // Obtenemos el metro
+        metro = LimpiaBase.getMetro();
+        // System.out.println(metro);
+
+        ////////// Usar un query específico ///////////////////////////
         try {
             Scanner sc = new Scanner(System.in);
             Query querySettings = new Query(sc);
             // querySettings.setTipoDeFecha();
-            querySettings.setLineaEstacion(metro);
+            // querySettings.setLineaEstacion(metro);
+            querySettings.setSettings(metro);
         } catch (ParseException e) {
-            System.out.println("Error en preguntas.setTipoDeFecha");
+            System.out.println("Error en setSettings");
             e.getStackTrace();
         }
 
@@ -51,24 +54,38 @@ public class Proyecto {
         // Solo para revisar que todo funciona
         System.out.println("Sacamos promedio");
         Promedio prom = new Promedio(salida, path);
-        Promedio promG = new Promedio(salidaGrande, path);
+        // Promedio promG = new Promedio(salidaGrande, path);
 
         prom.LeeArchivo();
-        promG.LeeArchivo();
-        System.out.println("El promedio total es: " + prom.getPromedio());
-        System.out.println("Calculando de " + prom.getContador() + " filas");
-        System.out.println("El promedio total es: " + promG.getPromedio());
-        System.out.println("Calculando de " + promG.getContador() + " filas");
+        // promG.LeeArchivo();
 
-        ////// Despachador
-        Despachador despachador = new Despachador(salidaGrande, path, 3);
-        despachador.LeeArchivo();
-        System.out.println("Se terminaron de hacer los subArchivos");
         // Tiempo final
         long tiempoFinalSec = System.nanoTime();
         long tiempoTotalSec = (tiempoFinalSec - tiempoInicioSec) / 1000000;
-        System.out.println("Tiempo transcurrido:" + tiempoTotalSec + "ms");
+        System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
 
+        // Enseñamos el promedio calculado
+        System.out.println("El promedio total es: " + prom.getPromedio());
+        System.out.println("Calculando de " + prom.getContador() + " filas");
+        // System.out.println("El promedio total es: " + promG.getPromedio());
+        // System.out.println("Calculando de " + promG.getContador() + " filas");
+
+        ////// Despachador
+        Despachador despachador = new Despachador(salida, path, 3);
+        despachador.LeeArchivo();
+        System.out.println("Se terminaron de hacer los subArchivos");
+
+        long tiempoInicioPar = System.nanoTime();
+        //////// Parte concurrente
+        Manager manager = new Manager(despachador.getCantidadArchivos());
+        manager.promedioConcurrente();
+
+        long tiempoFinalPar = System.nanoTime();
+        long tiempoTotalPar = (tiempoFinalPar - tiempoInicioPar) / 1000000;
+        System.out.println("Tiempo transcurrido de manera paralela: " + tiempoTotalPar + "ms");
+
+        System.out.println("El Speed-Up es de: ");
+        System.out.println(tiempoTotalSec / tiempoTotalPar);
     }
 
 }

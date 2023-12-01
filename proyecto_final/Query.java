@@ -15,11 +15,11 @@ public class Query {
   // el usuario quiere buscar, para así confirmar si el query es válido
 
   // Definimos las fechas
-  public static SimpleDateFormat sdf; // Formato de las fechas
+  // Formato de las fechas
+  public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
   private static Date fechaInicio;
   private static Date fechaFinal;
   private static String tipoFecha; // Entre Histórico o por periodos
-  // private String[] lineas; // líneas que se desean consultar
 
   // Metro que se va a usar
   public static Map<String, ArrayList<String>> metroMuestra;
@@ -28,21 +28,14 @@ public class Query {
   private Scanner sc;
 
   // Constructor
-  // public Query(String entrada, String pathIn, Scanner sc) throws ParseException
-  // {
-  // this.sc = sc;
-  // }
-
   public Query(Scanner sc) throws ParseException {
     this.sc = sc;
     // Definimos el formato de fecha y las fechas de inicio y fin
-    sdf = new SimpleDateFormat("yyyy-MM-dd");
-    sdf.setLenient(false);
+    sdf.setLenient(false); // Solo fechas válidas
+    // Definimos las fechas por defecto
     fechaInicio = sdf.parse("2010-01-01");
     fechaFinal = sdf.parse("2023-12-31");
-    System.out.println("\nmetroMuestra: ");
     metroMuestra = new HashMap<>();
-    System.out.println(metroMuestra);
   }
 
   // Métodos
@@ -225,6 +218,11 @@ public class Query {
     }
   }
 
+  public void setSettings(Map<String, ArrayList<String>> metro) {
+    setTipoDeFecha();
+    setLineaEstacion(metro);
+  }
+
   public static boolean checaQuery(String[] campos) {
     try {
       // Definimos los campos
@@ -256,7 +254,6 @@ public class Query {
       } else {
         return false;
       }
-
     } catch (ParseException e) {
       System.out.println("Error del Parse en HazAlgo");
       // e.printStackTrace();

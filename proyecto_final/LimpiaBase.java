@@ -37,10 +37,6 @@ public class LimpiaBase extends FileUtil {
 
       // Descomponemos el campo 0 de la fecha
       String fecha = campos[0];
-      // // Le damos un nuevo formato a la fecha de YYYYMMDD
-      // String nuevaFecha = fecha.substring(0, 4) + fecha.substring(5, 7)
-      // + fecha.substring(8, fecha.length());
-
       // Descomponemos el campo 3 en la linea
       String linea = campos[3];
       // Descomponemos el campo 4 en la estacion
@@ -59,9 +55,12 @@ public class LimpiaBase extends FileUtil {
         }
 
       } else {
-        // Si no está la línea, se agrega junto con su estación
-        metro.put(linea, new ArrayList<String>());
-        metro.get(linea).add(estacion);
+        // Checamos que no sea el header
+        if (!linea.equals("linea")) {
+          // Si no está la línea, se agrega junto con su estación
+          metro.put(linea, new ArrayList<String>());
+          metro.get(linea).add(estacion);
+        }
       }
 
       ////////// Escribimos el archivo ////////////////////////////
