@@ -14,8 +14,14 @@ public class Worker implements Runnable {
   @Override
   public void run() {
     // Leemos el archivo
-    promedio.LeeArchivo();
-    int cantidad = promedio.getContador();
-    double suma = promedio.getSuma();
+    this.promedio.LeeArchivo();
+  }
+
+  public double[] getValores() {
+    double valores[] = new double[2];
+    valores[0] = this.promedio.getSuma();
+    valores[1] = this.promedio.getContador();
+
+    return valores;
   }
 }

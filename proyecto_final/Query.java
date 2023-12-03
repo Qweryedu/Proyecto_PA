@@ -1,6 +1,7 @@
 package proyecto_final;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
@@ -31,7 +32,7 @@ public class Query {
   public Query(Scanner sc) throws ParseException {
     this.sc = sc;
     // Definimos el formato de fecha y las fechas de inicio y fin
-    sdf.setLenient(false); // Solo fechas válidas
+    // sdf.setLenient(false); // Solo fechas válidas
     // Definimos las fechas por defecto
     fechaInicio = sdf.parse("2010-01-01");
     fechaFinal = sdf.parse("2023-12-31");
@@ -150,7 +151,7 @@ public class Query {
         } else {
           // Checamos si es una entrada válida y la ingresamos si no está
           if (metro.containsKey("Línea " + str)) {
-            System.out.println("Intentamos agregar la línea " + str);
+            System.out.println("La línea " + str + " fue agregada");
             metroMuestra.putIfAbsent("Línea " + str, new ArrayList<String>());
           } else {
             System.out.println(str + "No es una línea");
@@ -176,7 +177,7 @@ public class Query {
     System.out.println("En caso de querer todas las estaciones, escribir '*'");
     // Iteramos por las líneas sí ingresadas
     for (String linea : metroMuestra.keySet()) {
-      System.out.println("Las estaciones de la línea son:");
+      System.out.println("Las estaciones de la línea " + linea + " son:");
       System.out.println(metro.get(linea));
       while (true) {
         try {
@@ -256,7 +257,14 @@ public class Query {
       }
     } catch (ParseException e) {
       System.out.println("Error del Parse en HazAlgo");
+      System.out.println("La fecha tiene un posible error " + campos[0]);
       // e.printStackTrace();
+    } catch (IndexOutOfBoundsException e) {
+      System.out.println("IndexOutOfBounds en: ");
+      System.out.println(Arrays.toString(campos));
+    } catch (NumberFormatException e) {
+      System.out.println("Error en Query");
+      System.out.println("La fecha tiene un posible error " + campos[0]);
     }
     return false;
   }

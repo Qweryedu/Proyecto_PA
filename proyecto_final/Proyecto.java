@@ -70,24 +70,26 @@ public class Proyecto {
         System.out.println("El promedio total es: " + promG.getPromedio());
         System.out.println("Calculando de " + promG.getContador() + " filas");
 
-
+        System.out.println("\n\nIniciamos el proceso paralelo\n");
         long tiempoInicioPar = System.nanoTime();
         ////// Despachador
         Despachador despachador = new Despachador(salidaGrande, path, 3);
         despachador.LeeArchivo();
         System.out.println("Se terminaron de hacer los subArchivos");
 
-        
+        System.out.println("Inicia el procesamiento");
         //////// Parte concurrente
         Manager manager = new Manager(despachador.getCantidadArchivos());
         manager.promedioConcurrente();
+        manager.juntaHilos();
 
         long tiempoFinalPar = System.nanoTime();
         long tiempoTotalPar = (tiempoFinalPar - tiempoInicioPar) / 1000000;
         System.out.println("Tiempo transcurrido de manera paralela: " + tiempoTotalPar + "ms");
 
         System.out.println("El Speed-Up es de: ");
-        System.out.printf("Valor es: %f",tiempoTotalSec / tiempoTotalPar);
+        System.out.println(tiempoTotalSec + "/" + tiempoTotalPar);
+        System.out.printf("%d", tiempoTotalSec / tiempoTotalPar);
     }
 
 }
