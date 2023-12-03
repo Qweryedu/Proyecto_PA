@@ -53,11 +53,11 @@ public class Proyecto {
         // Calculamos el promedio de todo
         // Solo para revisar que todo funciona
         System.out.println("Sacamos promedio");
-        Promedio prom = new Promedio(salida, path);
-        // Promedio promG = new Promedio(salidaGrande, path);
+        // Promedio prom = new Promedio(salida, path);
+        Promedio promG = new Promedio(salidaGrande, path);
 
-        prom.LeeArchivo();
-        // promG.LeeArchivo();
+        // prom.LeeArchivo();
+        promG.LeeArchivo();
 
         // Tiempo final
         long tiempoFinalSec = System.nanoTime();
@@ -65,17 +65,19 @@ public class Proyecto {
         System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
 
         // Enseñamos el promedio calculado
-        System.out.println("El promedio total es: " + prom.getPromedio());
-        System.out.println("Calculando de " + prom.getContador() + " filas");
-        // System.out.println("El promedio total es: " + promG.getPromedio());
-        // System.out.println("Calculando de " + promG.getContador() + " filas");
+        // System.out.println("El promedio total es: " + prom.getPromedio());
+        // System.out.println("Calculando de " + prom.getContador() + " filas");
+        System.out.println("El promedio total es: " + promG.getPromedio());
+        System.out.println("Calculando de " + promG.getContador() + " filas");
 
+
+        long tiempoInicioPar = System.nanoTime();
         ////// Despachador
-        Despachador despachador = new Despachador(salida, path, 3);
+        Despachador despachador = new Despachador(salidaGrande, path, 3);
         despachador.LeeArchivo();
         System.out.println("Se terminaron de hacer los subArchivos");
 
-        long tiempoInicioPar = System.nanoTime();
+        
         //////// Parte concurrente
         Manager manager = new Manager(despachador.getCantidadArchivos());
         manager.promedioConcurrente();
@@ -85,7 +87,7 @@ public class Proyecto {
         System.out.println("Tiempo transcurrido de manera paralela: " + tiempoTotalPar + "ms");
 
         System.out.println("El Speed-Up es de: ");
-        System.out.println(tiempoTotalSec / tiempoTotalPar);
+        System.out.printf("Valor es: %f",tiempoTotalSec / tiempoTotalPar);
     }
 
 }

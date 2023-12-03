@@ -15,5 +15,7 @@ public class Worker implements Runnable {
   public void run() {
     // Leemos el archivo
     promedio.LeeArchivo();
+    int cantidad = promedio.getContador();
+    double suma = promedio.getSuma();
   }
 }

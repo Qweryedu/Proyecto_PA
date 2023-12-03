@@ -16,5 +16,7 @@ public class Manager {
       manager[i] = new Thread(new Worker("SubArchivo" + i + ".csv", "./"));
       manager[i].start();
     }
+    ////// Obtenemos los datos de suma y cantidad
+    /// Calcular el último el promedio
   }
 }
