@@ -26,7 +26,7 @@ public class Filtra extends FileUtilWriter {
 
     ////// Determinamos el nombre del archivo de salida
     // Definimos el formateo correcto
-    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HHmm");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyyMMdd_HHmm");
     LocalDateTime ahora = LocalDateTime.now();
 
     this.salida = this.entrada.replaceAll(".csv", "") + "_filtered(" + dtf.format(ahora).toString() + ").csv";

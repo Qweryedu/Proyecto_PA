@@ -18,7 +18,7 @@ public class Proyecto {
     public static String path = "./"; // Directorio
     public static String pathSalida = "./";
     public static Map<String, ArrayList<String>> metro;
-    public static boolean conservarArchivo = true;
+    public static boolean conservarArchivo;
 
     public static void main(String[] args) {
         // Instanciamos el Scanner
@@ -78,7 +78,7 @@ public class Proyecto {
         }
         //////////////// Limpiamos la DB //////////////////////////////
         try {
-            LimpiaBase LimpiaDB = new LimpiaBase(entrada, path, pathSalida);
+            LimpiaBase LimpiaDB = new LimpiaBase(entrada, path);
             // LimpiaBase LimpiaDBG = new LimpiaBase(entradaGrande, path, salidaGrande,
             // path);
 
@@ -105,12 +105,35 @@ public class Proyecto {
         } catch (ParseException e) {
             System.out.println("Error en setSettings");
             e.getStackTrace();
-        } finally {
-            sc.close();
         }
 
+        System.out.println("Entrada + pathSalida");
+        System.out.println(entrada + pathSalida);
         Filtra filtro = new Filtra(entrada, pathSalida);
         filtro.leeArchivo();
+
+        // Preguntamos si quiere conservar el archivo
+        System.out.println("Desea conservar el archivo de salida? \nIngrese el número de la opción");
+        System.out.println("0) No \n1) Si");
+        while (true) {
+            try {
+                int res = sc.nextInt();
+                if (res == 0) {
+                    System.out.println("El archivo será eliminado");
+                    conservarArchivo = false;
+                    break;
+                } else if (res == 1) {
+                    System.out.println("El archivo se conserva");
+                    conservarArchivo = true;
+                    break;
+                } else {
+                    System.out.println("Ingrese una opción válida");
+                }
+            } catch (InputMismatchException ex) {
+                System.out.println("Favor de solo ingresar enteros");
+            }
+        }
+
         // Tomamos el tiempo
         // Tiempo inicial
         double tiempoInicioSec = System.nanoTime();
@@ -142,13 +165,18 @@ public class Proyecto {
                 } else {
                     break;
                 }
-            } catch (InputMismatchException e) {
+            } catch (InputMismatchException ex) {
                 System.out.println("Solo ingresar un entero para los hilos");
             }
 
         }
+        // Cerramos el Scanner porque ya no se usará
+        sc.close();
+
         ////// Despachador
-        Despachador despachador = new Despachador(filtro.getArchivoFinal(), path, numHilos);
+        System.out.println("El archivo final es:");
+        System.out.println(filtro.getArchivoFinal());
+        Despachador despachador = new Despachador(filtro.getArchivoFinal(), pathSalida, numHilos);
         despachador.leeArchivo();
         despachador.cierraBufferWriter();
         System.out.println("Se terminaron de hacer los subArchivos");
@@ -164,6 +192,10 @@ public class Proyecto {
         despachador.limpiaArchivos();
         double tiempoTotalPar = (tiempoFinalPar - tiempoInicioPar) / 1000000;
         System.out.println("Tiempo transcurrido de manera paralela: " + tiempoTotalPar + "ms");
+
+        if (!conservarArchivo) {
+            filtro.eliminaArchivo();
+        }
 
         // Enseñamos el promedio calculado
         System.out.println("El promedio total es: " + prom.getPromedio());

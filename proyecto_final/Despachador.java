@@ -19,6 +19,7 @@ public class Despachador extends FileUtilWriter {
     public Despachador(String entrada, String pathIn, int cantidadA) {
         // Recibe el archivo a revisar y la cantidad de sub archivos a crear
         super(entrada, pathIn);
+        System.out.println("Checando el path " + pathIn + entrada);
         this.cantidadArchivos = cantidadA;
 
         // Checamos los CPU's para definir la cantidad de hilos

@@ -22,7 +22,7 @@ public class LimpiaBase extends FileUtilWriter {
 
   // Constructor
   public LimpiaBase(
-      String entrada, String pathIn, String pathOut) throws IOException {
+      String entrada, String pathIn) throws IOException {
     super(entrada, pathIn);
 
     this.bufferEscritura = new BufferedWriter(new FileWriter(new File("./ArchivoLimpioTmp.csv")));
