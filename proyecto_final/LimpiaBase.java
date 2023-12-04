@@ -86,7 +86,6 @@ public class LimpiaBase extends FileUtil {
     try {
       this.bufferEscritura.close();
     } catch (IOException e) {
-      // TODO: handle exception
       System.out.println("No sepudo cerrar el buffer en LimpiaBase");
     }
   }

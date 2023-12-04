@@ -5,11 +5,14 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Date;
+// import java.util.Date;
 import java.util.HashMap;
 // import java.io.IOException;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+// import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class Query {
   // Esta clase pregunta en consola y recibe los parámetros que
@@ -17,9 +20,9 @@ public class Query {
 
   // Definimos las fechas
   // Formato de las fechas
-  public static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-  private static Date fechaInicio;
-  private static Date fechaFinal;
+  public static DateTimeFormatter sdf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+  private static LocalDate fechaInicio;
+  private static LocalDate fechaFinal;
   private static String tipoFecha; // Entre Histórico o por periodos
 
   // Metro que se va a usar
@@ -34,8 +37,11 @@ public class Query {
     // Definimos el formato de fecha y las fechas de inicio y fin
     // sdf.setLenient(false); // Solo fechas válidas
     // Definimos las fechas por defecto
-    fechaInicio = sdf.parse("2010-01-01");
-    fechaFinal = sdf.parse("2023-12-31");
+    // fechaInicio = sdf.parse("2010-01-01");
+    // fechaFinal = sdf.parse("2023-12-31");
+    fechaInicio = LocalDate.parse("2010-01-01", sdf);
+    fechaFinal = LocalDate.parse("2023-12-31", sdf);
+
     metroMuestra = new HashMap<>();
   }
 
@@ -79,7 +85,7 @@ public class Query {
           // Se lee la fecha
           String inicio = this.sc.nextLine();
           // Se convierte a LocalDateTime
-          fechaInicio = sdf.parse(inicio);
+          fechaInicio = LocalDate.parse(inicio, sdf);
           break;
         } catch (InputMismatchException e) {
           this.sc.nextLine();
@@ -95,7 +101,7 @@ public class Query {
           // Se lee la fecha
           String fFinal = this.sc.nextLine();
           // Se convierte a LocalDateTime
-          fechaFinal = sdf.parse(fFinal);
+          fechaFinal = LocalDate.parse(fFinal, sdf);
           break;
         } catch (InputMismatchException e) {
           this.sc.nextLine();
@@ -238,12 +244,12 @@ public class Query {
       // System.out.println(fecha);
       // Cambiamos la fecha a Date
 
-      Date nuevaFecha = sdf.parse(fecha);
+      LocalDate nuevaFecha = LocalDate.parse(fecha, sdf);
       // System.out.println(nuevaFecha);
       // Checamos si el dato entra
       // System.out.println(linea);
       // System.out.println(linea.equals("Línea 3"));
-      if (nuevaFecha.after(fechaInicio) && nuevaFecha.before(fechaFinal)) {
+      if (nuevaFecha.isAfter(fechaInicio) && nuevaFecha.isBefore(fechaFinal)) {
         // Checamos las líneas
         if (metroMuestra.containsKey(linea)) {
           // Checamos las estaciones
@@ -256,16 +262,18 @@ public class Query {
       } else {
         return false;
       }
-    } catch (ParseException e) {
-      System.out.println("Error del Parse en HazAlgo");
-      System.out.println("La fecha tiene un posible error " + campos[0]);
-      // e.printStackTrace();
+      // } catch (ParseException e) {
+      // System.out.println("Error del Parse en HazAlgo");
+      // System.out.println("La fecha tiene un posible error " + campos[0]);
+      // // e.printStackTrace();
     } catch (IndexOutOfBoundsException e) {
       System.out.println("IndexOutOfBounds en: ");
       System.out.println(Arrays.toString(campos));
     } catch (NumberFormatException e) {
       System.out.println("Error en Query");
       System.out.println("La fecha tiene un posible error " + campos[0]);
+    } catch (DateTimeParseException e) {
+      System.out.println("Error en el Query parser con la fecha " + campos[0]);
     }
     return false;
   }

@@ -95,9 +95,9 @@ public class Proyecto {
         // System.out.println("El promedio total es: " + promG.getPromedio());
         // System.out.println("Calculando de " + promG.getContador() + " filas");
         manager.printPromedio();
-        System.out.println("El Speed-Up es de: ");
-        System.out.printf("%f", tiempoTotalSec / tiempoTotalPar);
-        System.out.println(tiempoTotalSec + "/" + tiempoTotalPar);
+        // System.out.println("El Speed-Up es de: ");
+        System.out.printf("El Speed-Up es de: %f", tiempoTotalSec / tiempoTotalPar);
+        System.out.println("\n" + tiempoTotalSec + "/" + tiempoTotalPar);
 
     }
 
