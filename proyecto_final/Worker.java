@@ -14,7 +14,7 @@ public class Worker implements Runnable {
   @Override
   public void run() {
     // Leemos el archivo
-    this.promedio.LeeArchivo();
+    this.promedio.leeArchivo();
   }
 
   public double[] getValores() {

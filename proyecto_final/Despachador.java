@@ -9,7 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class Despachador extends FileUtil {
+public class Despachador extends FileUtilWriter {
     // Variables
     private int contador;
     private int cantidadArchivos;
@@ -28,8 +28,6 @@ public class Despachador extends FileUtil {
             System.out.println("Por lo que se sobre escribe a la cantidad de CPU's");
             this.cantidadArchivos = cpu * 4;
         }
-        // Asignamos la cantidad de lineas que entran por archivo
-        // this.lineasPorArchivo = cantidadL / cantidadA;
 
         // Hacemos las instancias de sub archivos
         for (int i = 0; i < this.cantidadArchivos; i += 1) {
@@ -42,7 +40,7 @@ public class Despachador extends FileUtil {
     }
 
     @Override
-    public void HazAlgo(String[] campos) {
+    public void hazAlgo(String[] campos) {
         // Recibimos los parámetros y los dividimos entre los archivos
         int index = this.contador % this.cantidadArchivos;
         try {
@@ -59,16 +57,14 @@ public class Despachador extends FileUtil {
     }
 
     @Override
-    public void CierraBufferWritter() {
+    public void cierraBufferWriter() {
         for (int i = 0; i < this.cantidadArchivos; i += 1) {
             try {
                 BufferSalida.get(i).close();
             } catch (IOException e) {
                 System.out.println("No se pudo cerrar en BuffreSalida en Despachador");
             }
-
         }
-
     }
 
     public void limpiaArchivos() {
@@ -79,7 +75,6 @@ public class Despachador extends FileUtil {
             } catch (IOException e) {
                 System.out.printf("No se pudo eliminar el SubArchivo%d", i);
             }
-
         }
     }
 

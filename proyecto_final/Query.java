@@ -37,8 +37,6 @@ public class Query {
     // Definimos el formato de fecha y las fechas de inicio y fin
     // sdf.setLenient(false); // Solo fechas válidas
     // Definimos las fechas por defecto
-    // fechaInicio = sdf.parse("2010-01-01");
-    // fechaFinal = sdf.parse("2023-12-31");
     fechaInicio = LocalDate.parse("2010-01-01", sdf);
     fechaFinal = LocalDate.parse("2023-12-31", sdf);
 
@@ -277,5 +275,4 @@ public class Query {
     }
     return false;
   }
-
 }

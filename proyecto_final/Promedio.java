@@ -17,25 +17,16 @@ public class Promedio extends FileUtil {
 
   // Métodos
   @Override
-  public void HazAlgo(String[] campos) {
+  public void hazAlgo(String[] campos) {
     // Magia sucede dentro
     // Método que calcula el promedio
-    // Si los campos cumplen con el Query, entonces se toman en cuenta
-    if (Query.checaQuery(campos)) {
-      try {
-        this.promedio += Double.parseDouble(campos[3]);
-        // Usamos el último index porque la afluencia queda en ese index
-        this.contador += 1;
-      } catch (IndexOutOfBoundsException e) {
-        System.out.println("Un valor está chueco en el iterador " + this.contador);
-      }
+    try {
+      this.promedio += Double.parseDouble(campos[3]);
+      // Usamos el último index porque la afluencia queda en ese index
+      this.contador += 1;
+    } catch (IndexOutOfBoundsException e) {
+      System.out.println("Un valor está chueco en el iterador " + this.contador);
     }
-
-  }
-
-  @Override
-  public void CierraBufferWritter() {
-    // Nada
   }
 
   public double getSuma() {

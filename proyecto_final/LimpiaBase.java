@@ -10,27 +10,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LimpiaBase extends FileUtil {
+public class LimpiaBase extends FileUtilWriter {
   // Esta clase se usa de manera inicial para limpiar la DB
   // Y para obtener los strings de las diferentes líneas y estaciones
   public int contador = 0;
 
   // Archivo de salida
-  BufferedWriter bufferEscritura;
+  private BufferedWriter bufferEscritura;
   // Diccionario con las lineas y estaciones
   private static Map<String, ArrayList<String>> metro = new HashMap<String, ArrayList<String>>();
 
   // Constructor
   public LimpiaBase(
-      String entrada, String pathIn,
-      String salida, String pathOut) throws IOException {
-    super(entrada, pathIn, salida, pathOut);
-    this.bufferEscritura = new BufferedWriter(new FileWriter(new File(pathOut, salida)));
+      String entrada, String pathIn, String pathOut) throws IOException {
+    super(entrada, pathIn);
+
+    this.bufferEscritura = new BufferedWriter(new FileWriter(new File("./ArchivoLimpioTmp.csv")));
   }
 
   // Métodos
   @Override
-  public void HazAlgo(String[] campos) {
+  public void hazAlgo(String[] campos) {
     // Se escribe el archivo
     try {
       ////////// Descomponemos los campos en variables ////////////
@@ -82,7 +82,7 @@ public class LimpiaBase extends FileUtil {
   }
 
   @Override
-  public void CierraBufferWritter() {
+  public void cierraBufferWriter() {
     try {
       this.bufferEscritura.close();
     } catch (IOException e) {
