@@ -185,6 +185,7 @@ public class Query {
           String str = this.sc.nextLine();
           // Si quiere todas las estaciones
           if (str.equals("*")) {
+            System.out.println("Usamos todas las estaciones");
             // Recorremos las estaciones de la línea
             for (String estacion : metro.get(linea)) {
               // Si no la contiene, la agregamos

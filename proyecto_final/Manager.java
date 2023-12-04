@@ -79,5 +79,6 @@ public class Manager {
   public void printPromedio() {
     double prom = this.totalSuma / this.totalContador;
     System.out.println("El promedio es: " + prom);
+    System.out.println("De " + this.totalContador + " elementos");
   }
 }

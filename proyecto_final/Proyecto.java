@@ -20,12 +20,14 @@ public class Proyecto {
         //////////////// Limpiamos la DB //////////////////////////////
         try {
             LimpiaBase LimpiaDB = new LimpiaBase(entrada, path, salida, path);
-            LimpiaBase LimpiaDBG = new LimpiaBase(entradaGrande, path, salidaGrande, path);
+            // LimpiaBase LimpiaDBG = new LimpiaBase(entradaGrande, path, salidaGrande,
+            // path);
 
             System.out.println("Creamos el objeto LimpiaDB");
             LimpiaDB.LeeArchivo();
-            LimpiaDBG.LeeArchivo();
+            // LimpiaDBG.LeeArchivo();
             System.out.println("Ya limpiamos");
+            LimpiaDB.CierraBufferWritter();
         } catch (IOException e) {
             e.getStackTrace();
         }
@@ -48,48 +50,55 @@ public class Proyecto {
 
         // Tomamos el tiempo
         // Tiempo inicial
-        long tiempoInicioSec = System.nanoTime();
+        double tiempoInicioSec = System.nanoTime();
 
         // Calculamos el promedio de todo
         // Solo para revisar que todo funciona
         System.out.println("Sacamos promedio");
-        // Promedio prom = new Promedio(salida, path);
-        Promedio promG = new Promedio(salidaGrande, path);
+        Promedio prom = new Promedio(salida, path);
+        // Promedio promG = new Promedio(salidaGrande, path);
 
-        // prom.LeeArchivo();
-        promG.LeeArchivo();
+        // Iteramos el archivo
+        prom.LeeArchivo();
+        // promG.LeeArchivo();
 
+        prom.CierraBufferWritter();
         // Tiempo final
-        long tiempoFinalSec = System.nanoTime();
-        long tiempoTotalSec = (tiempoFinalSec - tiempoInicioSec) / 1000000;
+        double tiempoFinalSec = System.nanoTime();
+        double tiempoTotalSec = (tiempoFinalSec - tiempoInicioSec) / 1000000;
         System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
 
-        // Enseñamos el promedio calculado
-        // System.out.println("El promedio total es: " + prom.getPromedio());
-        // System.out.println("Calculando de " + prom.getContador() + " filas");
-        System.out.println("El promedio total es: " + promG.getPromedio());
-        System.out.println("Calculando de " + promG.getContador() + " filas");
-
+        ///////////////////////////////// PARALELO ////////////////////////////
         System.out.println("\n\nIniciamos el proceso paralelo\n");
-        long tiempoInicioPar = System.nanoTime();
+
         ////// Despachador
-        Despachador despachador = new Despachador(salidaGrande, path, 3);
+        Despachador despachador = new Despachador(salida, path, 3);
         despachador.LeeArchivo();
+        despachador.CierraBufferWritter();
         System.out.println("Se terminaron de hacer los subArchivos");
 
         System.out.println("Inicia el procesamiento");
+        double tiempoInicioPar = System.nanoTime();
         //////// Parte concurrente
         Manager manager = new Manager(despachador.getCantidadArchivos());
         manager.promedioConcurrente();
         manager.juntaHilos();
 
-        long tiempoFinalPar = System.nanoTime();
-        long tiempoTotalPar = (tiempoFinalPar - tiempoInicioPar) / 1000000;
+        double tiempoFinalPar = System.nanoTime();
+        despachador.limpiaArchivos();
+        double tiempoTotalPar = (tiempoFinalPar - tiempoInicioPar) / 1000000;
         System.out.println("Tiempo transcurrido de manera paralela: " + tiempoTotalPar + "ms");
 
+        // Enseñamos el promedio calculado
+        System.out.println("El promedio total es: " + prom.getPromedio());
+        System.out.println("Calculando de " + prom.getContador() + " filas");
+        // System.out.println("El promedio total es: " + promG.getPromedio());
+        // System.out.println("Calculando de " + promG.getContador() + " filas");
+        manager.printPromedio();
         System.out.println("El Speed-Up es de: ");
+        System.out.printf("%f", tiempoTotalSec / tiempoTotalPar);
         System.out.println(tiempoTotalSec + "/" + tiempoTotalPar);
-        System.out.printf("%d", tiempoTotalSec / tiempoTotalPar);
+
     }
 
 }

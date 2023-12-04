@@ -68,6 +68,8 @@ public class LimpiaBase extends FileUtil {
       this.bufferEscritura.write(fecha + "," + linea + "," + estacion + "," + afluencia + "\n");
       // Después de escribir el dato, acumulamos
       this.contador += 1;
+      // Limpiamos el buffer
+      this.bufferEscritura.flush();
 
     } catch (FileNotFoundException e) {
       e.getStackTrace();
@@ -77,6 +79,16 @@ public class LimpiaBase extends FileUtil {
       e.getStackTrace();
     }
 
+  }
+
+  @Override
+  public void CierraBufferWritter() {
+    try {
+      this.bufferEscritura.close();
+    } catch (IOException e) {
+      // TODO: handle exception
+      System.out.println("No sepudo cerrar el buffer en LimpiaBase");
+    }
   }
 
   public static Map<String, ArrayList<String>> getMetro() {

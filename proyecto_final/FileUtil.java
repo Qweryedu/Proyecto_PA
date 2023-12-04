@@ -64,6 +64,7 @@ public abstract class FileUtil {
         HazAlgo(campos);
 
       }
+      bufferLectura.close();
     } catch (FileNotFoundException e) {
       e.getStackTrace();
     } catch (IOException e) {
@@ -73,4 +74,5 @@ public abstract class FileUtil {
 
   public abstract void HazAlgo(String[] campos);
 
+  public abstract void CierraBufferWritter();
 }

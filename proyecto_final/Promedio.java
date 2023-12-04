@@ -21,18 +21,21 @@ public class Promedio extends FileUtil {
     // Magia sucede dentro
     // Método que calcula el promedio
     // Si los campos cumplen con el Query, entonces se toman en cuenta
-    if (Query.checaQuery(campos))
-      ;
-    {
+    if (Query.checaQuery(campos)) {
       try {
-        this.promedio += Double.parseDouble(campos[campos.length - 1]);
+        this.promedio += Double.parseDouble(campos[3]);
         // Usamos el último index porque la afluencia queda en ese index
         this.contador += 1;
-      } catch (Exception e) {
+      } catch (IndexOutOfBoundsException e) {
         System.out.println("Un valor está chueco en el iterador " + this.contador);
       }
     }
 
+  }
+
+  @Override
+  public void CierraBufferWritter() {
+    // Nada
   }
 
   public double getSuma() {
