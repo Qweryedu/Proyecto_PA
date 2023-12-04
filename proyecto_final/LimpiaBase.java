@@ -6,6 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -92,5 +95,14 @@ public class LimpiaBase extends FileUtilWriter {
 
   public static Map<String, ArrayList<String>> getMetro() {
     return metro;
+  }
+
+  public void eliminaArchivoTmp() {
+    Path path = Paths.get("./ArchivoLimpioTmp.csv");
+    try {
+      Files.delete(path);
+    } catch (IOException e) {
+      System.out.println("No se pudo eliminar ArchivoLimpioTmp.csv");
+    }
   }
 }
