@@ -45,8 +45,6 @@ public class Manager {
       // Aumentamos el contador
       index += 1;
     }
-    ////// Obtenemos los datos de suma y cantidad
-    /// Calcular el último el promedio
   }
 
   public void sumaPromedios(double[] valores) {
@@ -78,5 +76,6 @@ public class Manager {
     double prom = this.totalSuma / this.totalContador;
     System.out.println("El promedio es: " + prom);
     System.out.println("De " + this.totalContador + " elementos");
+    System.out.println("Con un acumulado de: " + this.totalSuma);
   }
 }

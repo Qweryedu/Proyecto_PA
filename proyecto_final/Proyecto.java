@@ -188,10 +188,11 @@ public class Proyecto {
         // Enseñamos el promedio calculado
         System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
         System.out.println("El promedio secuencial total es: " + prom.getPromedio());
+        System.out.println("Con un acumulado de: " + prom.getSuma());
         System.out.println("Calculando de " + prom.getContador() + " filas");
 
         manager.printPromedio();
         System.out.println("\n" + tiempoTotalSec + "/" + tiempoTotalPar);
-        System.out.printf("El Speed-Up es de: %f", tiempoTotalSec / tiempoTotalPar);
+        System.out.printf("\nEl Speed-Up es de: %f", tiempoTotalSec / tiempoTotalPar);
     }
 }

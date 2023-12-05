@@ -68,6 +68,7 @@ public class Despachador extends FileUtilWriter {
     }
 
     public void limpiaArchivos() {
+        // Eliminamos todos los sub archivos temporales
         for (int i = 0; i < this.cantidadArchivos; i += 1) {
             Path path = Paths.get("./SubArchivo" + i + ".csv");
             try {
@@ -75,6 +76,13 @@ public class Despachador extends FileUtilWriter {
             } catch (IOException e) {
                 System.out.printf("No se pudo eliminar el SubArchivo%d", i);
             }
+        }
+        // Eliminamos el archivo temporal
+        try {
+            Path path = Paths.get("./ArchivoLimpioTmp.csv");
+            Files.delete(path);
+        } catch (IOException e) {
+            System.out.println("No se pudo borrar ArchivoLimpioTmp.csv");
         }
     }
 

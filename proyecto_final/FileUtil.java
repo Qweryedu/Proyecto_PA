@@ -16,7 +16,6 @@ public abstract class FileUtil {
   public FileUtil(String entrada, String pathIn) {
 
     this.archivo = new File(pathIn, entrada);
-    // BuscaDirectorio();
   }
 
   // Métodos
