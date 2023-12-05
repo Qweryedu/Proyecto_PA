@@ -25,8 +25,6 @@ public class Manager {
 
     // Llenamos el manager
     for (int i = 0; i < this.cantidadWorkers; i += 1) {
-      // objetosRunnable[i] = new Worker("SubArchivo" + i + ".csv", "./");
-      // objetosRunnable[i].start();
       objetosWorker[i] = new Worker("SubArchivo" + i + ".csv", "./");
       objetosHilo[i] = new Thread(objetosWorker[i]);
       objetosHilo[i].start();

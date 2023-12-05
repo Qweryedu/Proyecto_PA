@@ -13,18 +13,6 @@ public abstract class FileUtil {
   // public File archivoSalida;
 
   // Constructor
-  // public FileUtil(String entrada, String pathIn, String salida, String pathOut)
-  // {
-  // // Recibe el nombre del archivo y el path de búsqueda junto con el nombre
-  // // de salida y el path de salida
-
-  // this.archivo = new File(pathIn, entrada);
-  // // this.archivoSalida = new File(pathOut, salida);
-
-  // // Aseguramos que el archivo existe
-  // // BuscaDirectorio();
-  // }
-
   public FileUtil(String entrada, String pathIn) {
 
     this.archivo = new File(pathIn, entrada);
@@ -33,7 +21,6 @@ public abstract class FileUtil {
 
   // Métodos
   public void leeArchivo() {
-    // System.out.println("Empezamos a leer el archivo");
     String linea; // Para leer las líneas del archivo
     String[] campos; // Cuando separamos la línea leída
 

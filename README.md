@@ -20,6 +20,8 @@ Las columnas son:
 
 ---
 
+De igual manera se creó una base más grande para mostrar un poco más las ventajas del procesamiento paralelo y es la que está también incluida en el repositorio como _Datos10AniosMas.csv_
+
 ## Información genral de los campos
 
 Línea 1 contiene las siguientes estaciones:

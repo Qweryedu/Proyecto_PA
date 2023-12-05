@@ -11,9 +11,9 @@ import java.util.Scanner;
 
 public class Proyecto {
     // Variables de clase
-    public static String entrada = "afluenciastc_simple_08_2023.csv"; // Base de datos
-    public static String entradaGrande = "Datos10aniosMas.csv"; // Base de datos extendida
-    public static String salida = "BaseLimpia.csv"; // Archivo de salida
+    public static String entrada; // Base de datos
+    public static String entradaGrande; // Base de datos extendida
+    public static String salida; // Archivo de salida
     // public static String salidaGrande = "BaseLimpiaGrande.csv";
     public static String path = "./"; // Directorio
     public static String pathSalida = "./";
@@ -79,12 +79,8 @@ public class Proyecto {
         //////////////// Limpiamos la DB //////////////////////////////
         try {
             LimpiaBase LimpiaDB = new LimpiaBase(entrada, path);
-            // LimpiaBase LimpiaDBG = new LimpiaBase(entradaGrande, path, salidaGrande,
-            // path);
-
             System.out.println("Creamos el objeto LimpiaDB");
             LimpiaDB.leeArchivo();
-            // LimpiaDBG.LeeArchivo();
             System.out.println("Ya limpiamos");
             LimpiaDB.cierraBufferWriter();
         } catch (IOException e) {
@@ -93,22 +89,17 @@ public class Proyecto {
 
         // Obtenemos el metro
         metro = LimpiaBase.getMetro();
-        // System.out.println(metro);
 
         ////////// Usar un query específico ///////////////////////////
         try {
-            // Scanner sc = new Scanner(System.in);
             Query querySettings = new Query(sc);
-            // querySettings.setTipoDeFecha();
-            // querySettings.setLineaEstacion(metro);
             querySettings.setSettings(metro);
         } catch (ParseException e) {
             System.out.println("Error en setSettings");
             e.getStackTrace();
         }
 
-        System.out.println("Entrada + pathSalida");
-        System.out.println(entrada + pathSalida);
+        // Se filtra
         Filtra filtro = new Filtra(entrada, pathSalida);
         filtro.leeArchivo();
 
@@ -142,16 +133,13 @@ public class Proyecto {
         // Solo para revisar que todo funciona
         System.out.println("Sacamos promedio");
         Promedio prom = new Promedio(filtro.getArchivoFinal(), pathSalida);
-        // Promedio promG = new Promedio(salidaGrande, path);
 
         // Iteramos el archivo
         prom.leeArchivo();
-        // promG.LeeArchivo();
 
         // Tiempo final
         double tiempoFinalSec = System.nanoTime();
         double tiempoTotalSec = (tiempoFinalSec - tiempoInicioSec) / 1000000;
-        System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
 
         ///////////////////////////////// PARALELO ////////////////////////////
         System.out.println("\n\nIniciamos el proceso paralelo\n");
@@ -198,13 +186,12 @@ public class Proyecto {
         }
 
         // Enseñamos el promedio calculado
-        System.out.println("El promedio total es: " + prom.getPromedio());
+        System.out.println("Tiempo transcurrido secuencial: " + tiempoTotalSec + "ms");
+        System.out.println("El promedio secuencial total es: " + prom.getPromedio());
         System.out.println("Calculando de " + prom.getContador() + " filas");
-        // System.out.println("El promedio total es: " + promG.getPromedio());
-        // System.out.println("Calculando de " + promG.getContador() + " filas");
+
         manager.printPromedio();
-        // System.out.println("El Speed-Up es de: ");
-        System.out.printf("El Speed-Up es de: %f", tiempoTotalSec / tiempoTotalPar);
         System.out.println("\n" + tiempoTotalSec + "/" + tiempoTotalPar);
+        System.out.printf("El Speed-Up es de: %f", tiempoTotalSec / tiempoTotalPar);
     }
 }

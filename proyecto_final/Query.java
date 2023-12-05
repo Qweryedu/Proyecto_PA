@@ -5,11 +5,8 @@ import java.util.Arrays;
 import java.util.InputMismatchException;
 import java.util.Map;
 import java.util.Scanner;
-// import java.util.Date;
 import java.util.HashMap;
-// import java.io.IOException;
 import java.text.ParseException;
-// import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -35,7 +32,6 @@ public class Query {
   public Query(Scanner sc) throws ParseException {
     this.sc = sc;
     // Definimos el formato de fecha y las fechas de inicio y fin
-    // sdf.setLenient(false); // Solo fechas válidas
     // Definimos las fechas por defecto
     fechaInicio = LocalDate.parse("2010-01-01", sdf);
     fechaFinal = LocalDate.parse("2023-12-31", sdf);
@@ -130,7 +126,6 @@ public class Query {
       try {
         // Obtenemos la linea
         String str = this.sc.nextLine();
-        System.out.println("str: " + str);
         // Quitamos todos los espacios del string
         str = str.replaceAll("\\s", "");
 
@@ -234,19 +229,13 @@ public class Query {
       // Definimos los campos
       String linea = campos[1];
       String estacion = campos[2];
-      // String afluencia = campos[3];
-
-      // System.out.println(estacion.equals("Línea 3"));
       // Formateamos la fecha
       String fecha = campos[0];
-      // System.out.println(fecha);
-      // Cambiamos la fecha a Date
+      // Cambiamos la fecha a LocalDate
 
       LocalDate nuevaFecha = LocalDate.parse(fecha, sdf);
-      // System.out.println(nuevaFecha);
+
       // Checamos si el dato entra
-      // System.out.println(linea);
-      // System.out.println(linea.equals("Línea 3"));
       if (nuevaFecha.isAfter(fechaInicio) && nuevaFecha.isBefore(fechaFinal)) {
         // Checamos las líneas
         if (metroMuestra.containsKey(linea)) {
@@ -255,15 +244,10 @@ public class Query {
             return true;
           }
         }
-        // System.out.println("Entra dato");
 
       } else {
         return false;
       }
-      // } catch (ParseException e) {
-      // System.out.println("Error del Parse en HazAlgo");
-      // System.out.println("La fecha tiene un posible error " + campos[0]);
-      // // e.printStackTrace();
     } catch (IndexOutOfBoundsException e) {
       System.out.println("IndexOutOfBounds en: ");
       System.out.println(Arrays.toString(campos));
